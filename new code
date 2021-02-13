@@ -1,15 +1,15 @@
-#include <AccelStepper.h>
-#include <TM1637Display.h>
+#include <AccelStepper.h> //librairie pour le driver de moteur
+#include <TM1637Display.h> //librairie pour l'ecran 4 chiffres
 
-#define E_PIN           9  //enable pin
-#define stepPin         3  //step pin
-#define dirPin          2  //direction pin
-#define CLK             11 //clock for 4 digit screen
+#define E_PIN           9  //enable pin pour activer le driver
+#define stepPin         3  //step pin pour dire au driver le nbre de pas par seconde
+#define dirPin          2  //direction pin pour donner la direction (logique)
+#define CLK             11 //clock for 4 digit screen 
 #define DIO             12 //4 digit screen dio cable
 
-TM1637Display display = TM1637Display(CLK, DIO);
+TM1637Display display = TM1637Display(CLK, DIO); //
               
-AccelStepper stepper(1, stepPin, dirPin);
+AccelStepper stepper(1, stepPin, dirPin); //pour definir le type de moteur et driver pour la librairie, et les pins utilises
 
 int Speed = 248;
 int buttonstatus = 0;
@@ -22,7 +22,7 @@ void setup() {
   pinMode(6,INPUT_PULLUP);
   pinMode(7,INPUT_PULLUP); 
   pinMode(E_PIN,   OUTPUT);
-  digitalWrite(E_PIN, LOW);
+  digitalWrite(E_PIN, LOW); //pour activer le driver
   stepper.setMaxSpeed(1000);
   stepper.setSpeed(Speed);
   display.setBrightness(1);
@@ -33,7 +33,7 @@ void loop() {
   int pinValue2 = digitalRead(5);
   int pinValue3 = digitalRead(6);
   int pinValue4 = digitalRead(7);
-  delay(10);
+  delay(10); //un truc pour eviter des faux signaux pour les boutons
   display.showNumberDec(Speed);
   if(buttonstatus != pinValue2){
     buttonstatus = pinValue2;
@@ -45,6 +45,6 @@ void loop() {
     Speed++;
     display.showNumberDec(Speed);
   }
-  stepper.runSpeed();
+  stepper.runSpeed(); //ca fait utiliser la nouvelle vitesse
   delay(120);
 }
