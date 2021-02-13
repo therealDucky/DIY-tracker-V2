@@ -1,0 +1,50 @@
+#include <AccelStepper.h>
+#include <TM1637Display.h>
+
+#define E_PIN           9  //enable pin
+#define stepPin         3  //step pin
+#define dirPin          2  //direction pin
+#define CLK             11 //clock for 4 digit screen
+#define DIO             12 //4 digit screen dio cable
+
+TM1637Display display = TM1637Display(CLK, DIO);
+              
+AccelStepper stepper(1, stepPin, dirPin);
+
+int Speed = 248;
+int buttonstatus = 0;
+
+void setup() {
+  display.clear();
+  delay(1000);
+  pinMode(4,INPUT_PULLUP);
+  pinMode(5,INPUT_PULLUP);
+  pinMode(6,INPUT_PULLUP);
+  pinMode(7,INPUT_PULLUP); 
+  pinMode(E_PIN,   OUTPUT);
+  digitalWrite(E_PIN, LOW);
+  stepper.setMaxSpeed(1000);
+  stepper.setSpeed(Speed);
+  display.setBrightness(1);
+}
+
+void loop() {
+  int pinValue1 = digitalRead(4);
+  int pinValue2 = digitalRead(5);
+  int pinValue3 = digitalRead(6);
+  int pinValue4 = digitalRead(7);
+  delay(10);
+  display.showNumberDec(Speed);
+  if(buttonstatus != pinValue2){
+    buttonstatus = pinValue2;
+    Speed--;
+    display.showNumberDec(Speed);
+  }
+  if(buttonstatus != pinValue3){
+    buttonstatus = pinValue3;
+    Speed++;
+    display.showNumberDec(Speed);
+  }
+  stepper.runSpeed();
+  delay(120);
+}
