@@ -6,10 +6,10 @@
 #define DIO 12
 
 TM1637Display display = TM1637Display(CLK, DIO);
-
+                   //(mode,step, dir)
 AccelStepper stepper(1, 3, 2);
 
-int vitesse = 2475;
+int Speed = 2475;
 int buttonstatus = 0;
 
 void setup() {
@@ -31,7 +31,7 @@ void loop() {
   int pinValue4 = digitalRead(7);
   delay(10);
 
-  display.showNumberDec(vitesse);
+  display.showNumberDec(Speed);
 
   if(buttonstatus != pinValue1){
     buttonstatus = pinValue1;
@@ -39,19 +39,19 @@ void loop() {
   }
   if(buttonstatus != pinValue2){
     buttonstatus = pinValue2;
-    vitesse--;
-    display.showNumberDec(vitesse);
+    Speed--;
+    display.showNumberDec(Speed);
   }
   if(buttonstatus != pinValue3){
     buttonstatus = pinValue3;
-    vitesse++;
-    display.showNumberDec(vitesse);
+    Speed++;
+    display.showNumberDec(Speed);
   }
   if(buttonstatus != pinValue4){
     buttonstatus = pinValue4;
     stepper.setSpeed(4000);
   }
-  stepper.setSpeed(vitesse);
+  stepper.setSpeed(Speed);
   stepper.runSpeed();
   delay(120);
 }
