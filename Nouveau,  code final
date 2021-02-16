@@ -37,6 +37,16 @@ void loop() {
   pinValue3 = digitalRead(6);
   pinValue4 = digitalRead(7);
   display.showNumberDec(Speed);
+  while(pinValue1 == LOW){
+    display.showNumberDec(-100);
+    //stepper.setSpeed(-100);
+    //stepper.runSpeed();
+    while(pinValue1 == LOW){
+      pinValue1 = digitalRead(4);
+      //stepper.setSpeed(Speed);
+      //stepper.runSpeed();
+      delay(20);}
+    }
   if(pinValue2 == LOW){
     Speed--;
     display.showNumberDec(Speed);
@@ -51,6 +61,15 @@ void loop() {
       pinValue3 = digitalRead(6);
       delay(20);}
   }
+  while(pinValue4 == LOW){
+    display.showNumberDec(600);
+    //stepper.setSpeed(600);
+    //stepper.runSpeed();
+    while(pinValue4 == LOW){
+      pinValue4 = digitalRead(7);
+      //stepper.setSpeed(Speed);
+      //stepper.runSpeed();
+      delay(20);}
   //stepper.setSpeed(Speed);
   //stepper.runSpeed();
 }
