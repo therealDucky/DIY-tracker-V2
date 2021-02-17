@@ -1,0 +1,74 @@
+
+#include <AccelStepper.h> //librairie pour le driver de moteur
+#include <TM1637Display.h> //librairie pour l'ecran 4 chiffres
+
+#define E_PIN           9  //enable pin pour activer le driver
+#define stepPin         3  //step pin pour dire au driver le nbre de pas par seconde
+#define dirPin          2  //direction pin pour donner la direction (logique)
+#define CLK             10 //clock for 4 digit screen 
+#define DIO             12 //4 digit screen dio cable
+
+TM1637Display display = TM1637Display(CLK, DIO); 
+
+AccelStepper stepper(1, stepPin, dirPin); //pour definir le type de moteur et driver pour la librairie, et les pins utilises
+
+int Speed = 248;
+int pinValue1;
+int pinValue2;
+int pinValue3;
+int pinValue4;
+
+void setup() {
+  display.clear();
+  delay(1000);
+  pinMode(4,INPUT_PULLUP);
+  pinMode(5,INPUT_PULLUP);
+  pinMode(6,INPUT_PULLUP);
+  pinMode(7,INPUT_PULLUP); 
+  pinMode(E_PIN,   OUTPUT);
+  digitalWrite(E_PIN, LOW); //pour activer le driver
+  stepper.setMaxSpeed(1000);
+  display.setBrightness(1);
+}
+
+void loop() {
+  stepper.setSpeed(Speed);
+  stepper.run();
+  pinValue1 = digitalRead(5);
+  pinValue2 = digitalRead(4);
+  pinValue3 = digitalRead(6);
+  pinValue4 = digitalRead(7);
+  display.showNumberDec(Speed);
+  while(pinValue1 == LOW){
+    display.showNumberDec(0);
+    stepper.setSpeed(0);
+    stepper.run();
+    while(pinValue1 == LOW){
+      pinValue1 = digitalRead(5);
+      delay(20);}
+    }
+  if(pinValue2 == LOW){
+    Speed--;
+    display.showNumberDec(Speed);
+    while(pinValue2 == LOW){
+      pinValue2 = digitalRead(4);
+      delay(20);}
+  }
+  if(pinValue3 == LOW){
+    Speed++;
+    display.showNumberDec(Speed);
+    while(pinValue3 == LOW){
+      pinValue3 = digitalRead(6);
+      delay(20);}
+  }
+  while(pinValue4 == LOW){
+    display.showNumberDec(600);
+    stepper.setSpeed(600);
+    stepper.run();
+    while(pinValue4 == LOW){
+      pinValue4 = digitalRead(7);
+      delay(20);}
+  stepper.setSpeed(Speed);
+  stepper.run();
+}
+}
