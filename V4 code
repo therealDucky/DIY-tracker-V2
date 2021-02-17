@@ -38,8 +38,7 @@ void loop() {
   pinValue4 = digitalRead(7);
   display.showNumberDec(Speed);
   while(pinValue1 == LOW){
-    display.showNumberDec(0);
-    
+    display.showNumberDec(0); 
     stepper.setSpeed(0);
     stepper.runSpeed();
     while(pinValue1 == LOW){
