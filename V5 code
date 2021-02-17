@@ -1,4 +1,3 @@
-
 #include <AccelStepper.h> //librairie pour le driver de moteur
 #include <TM1637Display.h> //librairie pour l'ecran 4 chiffres
 
