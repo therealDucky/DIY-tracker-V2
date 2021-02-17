@@ -4,7 +4,7 @@
 #define E_PIN           9  //enable pin pour activer le driver
 #define stepPin         3  //step pin pour dire au driver le nbre de pas par seconde
 #define dirPin          2  //direction pin pour donner la direction (logique)
-#define CLK             11 //clock for 4 digit screen 
+#define CLK             10 //clock for 4 digit screen 
 #define DIO             12 //4 digit screen dio cable
 
 TM1637Display display = TM1637Display(CLK, DIO); //
@@ -38,15 +38,19 @@ void loop() {
   pinValue4 = digitalRead(7);
   delay(10); //un truc pour eviter des faux signaux pour les boutons
   display.showNumberDec(Speed);
-  if(pinValue2 == HIGH){
+  if(pinValue2 == LOW){
     Speed--;
     display.showNumberDec(Speed);
-    while(pinValue2 == HIGH){}
+    while(pinValue2 == LOW){
+      pinValue2 = digitalRead(5);
+    }
   }
-  if(pinValue3 == HIGH){
+  if(pinValue3 == LOW){
     Speed++;
     display.showNumberDec(Speed);
-    while(pinValue3 == HIGH){}
+    while(pinValue3 == LOW){
+      pinValue3 = digitalRead(6);
+    }
   }
   stepper.setSpeed(Speed);
   stepper.runSpeed();
